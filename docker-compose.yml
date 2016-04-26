@@ -1,0 +1,13 @@
+dev:
+  container_name: pylearn
+  build: .
+  env_file: dev.env
+  volumes:
+    - ./:/opt/pylearn
+  command: '/bin/bash'
+test:
+  container_name: pylearn
+  build: .
+  volumes:
+    - ./:/opt/pylearn
+  command: 'python -m unittest discover'

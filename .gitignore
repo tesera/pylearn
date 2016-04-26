@@ -1,0 +1,9 @@
+.eggs
+*.pyc
+*.pyo
+*.egg-info
+.DS_Store
+tests/output/
+pysite
+dev.env
+*.log
