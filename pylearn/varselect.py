@@ -1,5 +1,4 @@
-from itertools import permutations
-
+from itertools import combinations
 import pandas as pd
 import numpy as np
 from scipy import stats
@@ -33,7 +32,8 @@ def extract_xvar_combos(varselect=None):
         xvars = list(model['VARNAME'].sort_values())
         xvars_data = {'XVAR' + str(i+1): var for i, var in enumerate(xvars)}
         model_hash = hashlib.sha1(''.join(xvars)).hexdigest()
-        row_data = {'MODELHASH': model_hash, 'MODELID': modelid, 'NMODELS': 0, 'NVAR': len(xvars)}
+        row_data = {'MODELHASH': model_hash, 'MODELID': modelid,
+                    'NMODELS': 0, 'NVAR': len(xvars)}
         data.append(dict(row_data.items() + xvars_data.items()))
 
     by_model_hash = pd.DataFrame(data).groupby(by='MODELHASH')
@@ -73,11 +73,11 @@ def extract_xvar_combos(varselect=None):
 
 def remove_high_corvar(varrank=None, xvarselv1=None, ucorcoef=None):
 
-    for var1, var2 in permutations(varrank['VARNAME'], 2):
-        coor_coef = ucorcoef[(ucorcoef['VARNAME1'] == var1) &
+    for var1, var2 in combinations(varrank['VARNAME'], 2):
+        corr_coef = ucorcoef[(ucorcoef['VARNAME1'] == var1) &
                              (ucorcoef['VARNAME2'] == var2)]['CORCOEF'].item()
 
-        if abs(coor_coef) >= 0.8:
-            xvarselv1.ix[xvarselv1['VARNAME'] == var1, 'XVARSEL'] = 'N'
+        if abs(corr_coef) >= 0.8:
+            xvarselv1.ix[xvarselv1['VARNAME'] == var2, 'XVARSEL'] = 'N'
 
     return xvarselv1
