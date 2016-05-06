@@ -64,9 +64,15 @@ def combine_evaluation_datasets(lda_ctabsum, posterior, vsel_x):
     :param vsel_x: model variables data frame
 
     """
+    lda_ctabsum.reset_index(level=0, inplace=True)
+    posterior.reset_index(level=0, inplace=True)
+
     ctab_posterior = pd.merge(posterior, lda_ctabsum,
-        how='inner', sort=True, left_index=True, right_index=True)
-    combined = pd.merge(ctab_posterior, vsel_x, sort=True)
+                              how='inner', sort=True, left_on=['VARSET'],
+                              right_on=['VARSET'])
+    combined = pd.merge(ctab_posterior, vsel_x, sort=True, left_on=['VARSET', 'NVAR'],
+                        right_on=['VARSET', 'NVAR'])
+
     ranked = rank_varset_assess(combined)
     columns = ['VARSET','OA','KHAT','MINPA','MAXPA','MINUA','MAXUA','NVAR','UERROR','MODELID','NMODELS','XVAR1','XVAR2','XVAR3','XVAR4','XVAR5','XVAR6','XVAR7','XVAR8','XVAR9','XVAR10','VARSETRANK']
     ranked = ranked.reindex_axis(columns, axis=1)
