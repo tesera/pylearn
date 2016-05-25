@@ -81,6 +81,7 @@ def remove_high_corvar(varrank=None, xvarselv1=None, ucorcoef=None):
 
         varrank_selection = (varrank['VARNAME'] == var1) | (varrank['VARNAME'] == var2)
         varrank_pair = varrank[varrank_selection]
+        # TODO: handle ties consistently
         ix_least_important = varrank_pair['IMPORTANCE'].idxmin()
         least_important_var = varrank_pair.ix[ix_least_important, 'VARNAME']
         xvarselv1.ix[xvarselv1['VARNAME'] == least_important_var, 'XVARSEL'] = 'N'
