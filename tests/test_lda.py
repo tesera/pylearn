@@ -34,6 +34,7 @@ class TestLDAnalysis(TestCase):
         lda_ctabsum = pd.read_csv('./tests/data/expected/lda_ctabsum.csv', index_col='VARSET')
         posterior = pd.read_csv('./tests/data/rlearn/POSTERIOR.csv', index_col='VARSET')
 
+        posterior.drop('NVAR', axis=1, inplace=True)
         assess = combine_evaluation_datasets(lda_ctabsum, posterior, vsel_x)
         # Hack formatting and na_rep to match legacy output
         # the cause is missing values in POSTERIOR.csv from subselect R routine
