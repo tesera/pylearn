@@ -72,12 +72,18 @@ def extract_xvar_combos(varselect=None):
     return (xvarselv, uniquevar)
 
 def remove_high_corvar(varrank=None, xvarselv1=None, ucorcoef=None):
-
     for var1, var2 in combinations(varrank['VARNAME'], 2):
         corr_coef = ucorcoef[(ucorcoef['VARNAME1'] == var1) &
                              (ucorcoef['VARNAME2'] == var2)]['CORCOEF'].item()
 
-        if abs(corr_coef) >= 0.8:
-            xvarselv1.ix[xvarselv1['VARNAME'] == var2, 'XVARSEL'] = 'N'
+        if abs(corr_coef) < 0.8:
+            continue
+
+        varrank_selection = (varrank['VARNAME'] == var1) | (varrank['VARNAME'] == var2)
+        varrank_pair = varrank[varrank_selection]
+        # TODO: handle ties consistently
+        ix_least_important = varrank_pair['IMPORTANCE'].idxmin()
+        least_important_var = varrank_pair.ix[ix_least_important, 'VARNAME']
+        xvarselv1.ix[xvarselv1['VARNAME'] == least_important_var, 'XVARSEL'] = 'N'
 
     return xvarselv1
