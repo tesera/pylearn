@@ -1,11 +1,10 @@
 import pandas as pd
 import numpy as np
 from scipy import stats
-import math
 
-from pylearn.varset import get_param, get_rloadrank
+from pylearn.varset import get_param
 
-def rate(xy, x_filtered, param, dfunct, yvar):
+def rate(xy, x_filtered, param):
     param_const = param[param['PARAMNAME'] == 'CONSTANT']['PARAMVALUE'][0]
     param_values = param[param['PARAMNAME'] != 'CONSTANT'].set_index('ATTR')['PARAMVALUE']
     param_attrs = param[param['PARAMNAME'] != 'CONSTANT']['ATTR']
@@ -28,10 +27,10 @@ def rate(xy, x_filtered, param, dfunct, yvar):
     xys = zs[(zs['pRANK'] >= 0.1) & (zs['pRANK'] <= 0.9)]
     x = list(np.log(xys['ZTRANS']))
     y = list(xys['LODDS'])
-    slope, intercept, r_value, p_value, std_err = stats.linregress(x,y)
+    slope, intercept, r_value, p_value, std_err = stats.linregress(x, y)
 
-    idfcoef_data=[slope, intercept, r_value, p_value, std_err]
-    idfcoef_columns=['slope', 'intercept', 'r_value', 'p_value', 'std_err']
+    idfcoef_data = [slope, intercept, r_value, p_value, std_err]
+    idfcoef_columns = ['slope', 'intercept', 'r_value', 'p_value', 'std_err']
     idfcoef = pd.Series(idfcoef_data, idfcoef_columns)
 
     sumz = x_filtered.set_index('UID').filter(param_attrs)

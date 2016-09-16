@@ -2,8 +2,6 @@
 # TODO: module naming - do module names represent what they do/contain?
 import pandas as pd
 import numpy as np
-import math
-import os
 
 from varset import rank_varset_assess
 from .scores import khat, overall_accuracy, producer_accuracy, user_accuracy
