@@ -48,7 +48,7 @@ def predict(xy, x_filtered, dfunct, varset, yvar, idf):
     divisor = idfpvt.ix['TRMM','HISTORICAL']
     idfpvt.ix['RATIO'] = idfpvt.ix['TRMM'] / divisor
 
-    idfcoef, sumz = rate(xy, x_filtered, param, dfunct, yvar)
+    idfcoef, sumz = rate(xy, x_filtered, param)
 
     sumz.ix[sumz['ZTRANS'] > 0, 'ZTRANS'] = np.log(sumz['ZTRANS'])
 
