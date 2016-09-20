@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='pylearn',
-    version='1.0.0',
+    version='1.0.1',
     description='Python package for learn cli.',
     author='Tesera Systems Inc.',
     author_email='oss@tesera.com',
